@@ -3,508 +3,677 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Park Su Hee Portfolio</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
+  <title>AI 수익화 단계 진단 계산기</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --sub: #6b7280;
+      --line: #e5e7eb;
+      --accent: #111827;
+      --accent-soft: #eef2ff;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 22px;
     }
 
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; }
 
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #efefef;
-      color: #2b2b31;
+      margin: 0;
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: linear-gradient(180deg, #f7f8fc 0%, #eef2ff 100%);
+      color: var(--text);
     }
 
-    .page {
-      position: relative;
-      width: 100%;
-      min-height: 100vh;
-      overflow: hidden;
+    .wrap {
+      width: min(960px, calc(100% - 32px));
+      margin: 40px auto 80px;
     }
 
-    /* 상단 메뉴 */
-    .top-nav {
-      position: absolute;
-      top: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 460px;
-      height: 64px;
-      background: #f5f5f5;
-      border: 1px solid #d6d6d6;
+    .hero {
+      text-align: center;
+      padding: 28px 20px 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
       border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 10px 8px 8px;
-      z-index: 20;
-      box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .nav-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: #ffffff;
-      border: 1px solid #dcdcdc;
-    }
-
-    .nav-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      white-space: nowrap;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #666;
+      background: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: var(--shadow);
+      color: #4338ca;
       font-size: 14px;
-      font-weight: 500;
+      font-weight: 700;
+      margin-bottom: 18px;
     }
 
-    .nav-links a:hover {
-      color: #222;
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
     }
 
-    .nav-contact {
-      width: 106px;
-      height: 46px;
-      border: none;
-      border-radius: 999px;
-      background: #2c2c31;
-      color: #fff;
+    .hero p {
+      margin: 14px auto 0;
+      max-width: 760px;
+      color: var(--sub);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid rgba(17,24,39,0.06);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+    }
+
+    .left, .right {
+      padding: 26px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .progress {
+      min-width: 130px;
+      text-align: right;
+      color: var(--sub);
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
-      flex-shrink: 0;
     }
 
-    /* 좌측 파란 점 */
-    .blue-dot {
-      position: absolute;
-      left: 120px;
-      top: 170px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: #5963e8;
-      z-index: 5;
-    }
-
-    /* 중앙 메인 이미지 카드 */
-    .center-card {
-      position: absolute;
-      left: 50%;
-      top: 250px;
-      transform: translateX(-50%);
-      width: 315px;
-      height: 405px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.38);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
-      overflow: hidden;
-      z-index: 4;
-    }
-
-    .center-card img {
+    .bar {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+      height: 10px;
+      background: #eef2f7;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 24px;
     }
 
-    /* 좌우 텍스트 영역 - 핵심: 수평 정렬 */
-    .hero-text-wrap {
-      position: absolute;
-      left: 50%;
-      top: 450px;
-      transform: translateX(-50%);
-      width: 1180px;
-      max-width: calc(100% - 120px);
+    .bar > div {
+      width: 20%;
+      height: 100%;
+      background: linear-gradient(90deg, #4f46e5, #7c3aed);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .question {
+      display: none;
+      animation: fadeIn 0.28s ease;
+    }
+
+    .question.active { display: block; }
+
+    .q-label {
+      color: #4f46e5;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .q-title {
+      margin: 0 0 8px;
+      font-size: 28px;
+      line-height: 1.35;
+      letter-spacing: -0.03em;
+    }
+
+    .q-desc {
+      margin: 0 0 18px;
+      color: var(--sub);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 16px 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: #fff;
+    }
+
+    .option:hover {
+      transform: translateY(-1px);
+      border-color: #a5b4fc;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.08);
+    }
+
+    .option.selected {
+      border-color: #4f46e5;
+      background: #eef2ff;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.12);
+    }
+
+    .option-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 5px;
+    }
+
+    .option-desc {
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .nav {
       display: flex;
       justify-content: space-between;
-      align-items: center; /* 핵심 */
-      z-index: 10;
-      pointer-events: none;
+      gap: 12px;
+      margin-top: 22px;
     }
 
-    .left-text,
-    .right-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
     }
 
-    .left-text {
-      align-items: flex-start;
-      width: 360px;
+    .btn-ghost {
+      background: #f3f4f6;
+      color: #111827;
     }
 
-    .right-text {
-      align-items: flex-start;
-      width: 420px;
+    .btn-main {
+      background: linear-gradient(90deg, #111827, #374151);
+      color: #fff;
+      min-width: 120px;
     }
 
-    .small-name {
+    button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .right h3 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+
+    .mini {
+      color: var(--sub);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .score-box {
+      padding: 18px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #111827, #4338ca);
+      color: #fff;
+      margin: 18px 0;
+    }
+
+    .score-label {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 8px;
+    }
+
+    .score-value {
       font-size: 34px;
+      font-weight: 900;
       line-height: 1;
-      letter-spacing: -0.03em;
-      color: #2f3138;
-      margin-bottom: 10px;
-      font-weight: 500;
+      letter-spacing: -0.04em;
     }
 
-    .big-left,
-    .big-right {
-      font-size: 150px;
-      line-height: 0.88;
-      letter-spacing: -0.06em;
-      font-weight: 900;
-      color: #2b2b31;
+    .checklist {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .item {
+      padding: 14px;
+      border-radius: 16px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .result {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .result.show { display: block; }
+
+    .stage-badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      background: #eef2ff;
+      color: #4338ca;
+      margin-bottom: 12px;
+    }
+
+    .result-title {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.15;
+      letter-spacing: -0.04em;
+      margin: 0 0 12px;
+    }
+
+    .result-desc, .result-block p {
+      color: var(--sub);
+      line-height: 1.8;
       margin: 0;
     }
 
-    .right-desc {
-      margin-top: 12px;
-      font-size: 24px;
-      line-height: 1.25;
-      color: #3e434c;
-      font-weight: 400;
-      max-width: 360px;
+    .result-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
     }
 
-    /* 하단 플로팅 버튼 */
-    .floating-button {
-      position: absolute;
-      left: 50%;
-      top: 650px;
-      transform: translateX(-50%);
-      width: 118px;
-      height: 118px;
-      border-radius: 50%;
-      border: none;
-      background: #5963e8;
-      color: #fff;
-      font-size: 50px;
-      cursor: pointer;
-      box-shadow: 0 18px 32px rgba(89, 99, 232, 0.25);
-      z-index: 12;
+    .result-block {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fbfcff;
+    }
+
+    .result-block h4 {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .tags {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .floating-button:hover {
-      transform: translateX(-50%) scale(1.03);
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      background: #f3f4f6;
+      color: #374151;
     }
 
-    /* 반응형 */
-    @media (max-width: 1400px) {
-      .hero-text-wrap {
-        width: 1040px;
-      }
-
-      .big-left,
-      .big-right {
-        font-size: 128px;
-      }
-
-      .small-name {
-        font-size: 30px;
-      }
-
-      .right-desc {
-        font-size: 22px;
-      }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
     }
 
-    @media (max-width: 1100px) {
-      .top-nav {
-        width: 420px;
-      }
-
-      .nav-links {
-        gap: 18px;
-      }
-
-      .hero-text-wrap {
-        width: 92%;
-        top: 470px;
-      }
-
-      .left-text {
-        width: 300px;
-      }
-
-      .right-text {
-        width: 340px;
-      }
-
-      .big-left,
-      .big-right {
-        font-size: 96px;
-      }
-
-      .small-name {
-        font-size: 24px;
-      }
-
-      .right-desc {
-        font-size: 19px;
-        max-width: 300px;
-      }
-
-      .center-card {
-        width: 280px;
-        height: 360px;
-      }
-
-      .floating-button {
-        top: 640px;
-        width: 104px;
-        height: 104px;
-        font-size: 44px;
-      }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width: 820px) {
-      .top-nav {
-        width: calc(100% - 32px);
-        max-width: 460px;
-        height: 60px;
-      }
-
-      .nav-links {
-        gap: 14px;
-      }
-
-      .nav-links a {
-        font-size: 13px;
-      }
-
-      .nav-contact {
-        width: 92px;
-        height: 42px;
-        font-size: 13px;
-      }
-
-      .blue-dot {
-        left: 34px;
-        top: 145px;
-        width: 12px;
-        height: 12px;
-      }
-
-      .center-card {
-        top: 220px;
-        width: 240px;
-        height: 320px;
-      }
-
-      .hero-text-wrap {
-        position: absolute;
-        top: 575px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: calc(100% - 36px);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-        text-align: center;
-      }
-
-      .left-text,
-      .right-text {
-        width: 100%;
-        align-items: center;
-      }
-
-      .big-left,
-      .big-right {
-        font-size: 68px;
-      }
-
-      .small-name {
-        font-size: 20px;
-        margin-bottom: 8px;
-      }
-
-      .right-desc {
-        font-size: 17px;
-        max-width: 320px;
-      }
-
-      .floating-button {
-        top: 860px;
-        width: 92px;
-        height: 92px;
-        font-size: 38px;
-      }
-
-      .page {
-        min-height: 980px;
-      }
-    }
-
-    @media (max-width: 560px) {
-      .nav-links {
-        gap: 10px;
-      }
-
-      .nav-links a {
-        font-size: 12px;
-      }
-
-      .nav-contact {
-        width: 82px;
-      }
-
-      .big-left,
-      .big-right {
-        font-size: 56px;
-      }
-
-      .right-desc {
-        font-size: 15px;
-      }
-
-      .small-name {
-        font-size: 18px;
-      }
-
-      .center-card {
-        width: 210px;
-        height: 280px;
-      }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .wrap { width: min(100%, calc(100% - 20px)); margin-top: 18px; }
+      .left, .right { padding: 20px; }
+      .q-title { font-size: 24px; }
     }
   </style>
 </head>
 <body>
-  <div class="page">
-    <header class="top-nav">
-      <div class="nav-left">
-        <div class="nav-logo">
-          <img src="./img5.png" alt="profile icon" />
-        </div>
-
-        <nav class="nav-links">
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Projects</a>
-          <a href="#">Blogs</a>
-        </nav>
-      </div>
-
-      <button class="nav-contact">Contact</button>
-    </header>
-
-    <div class="blue-dot"></div>
-
-    <div class="center-card">
-      <img src="./img6.png" alt="Park Su Hee main photo" />
-    </div>
-
-    <section class="hero-text-wrap">
-      <div class="left-text">
-        <div class="small-name">PARK SU HEE</div>
-        <h1 class="big-left">CLASS</h1>
-      </div>
-
-      <div class="right-text">
-        <h1 class="big-right">DESIGNER</h1>
-        <p class="right-desc">
-          By the end of the class, you can do at least one thing.
-        </p>
-      </div>
+  <div class="wrap">
+    <section class="hero">
+      <div class="badge">AI 수익화 진단 · 5문항 인터랙티브 웹앱</div>
+      <h1>AI 수익화 단계 진단 계산기</h1>
+      <p>
+        이 앱은 감이 아니라 구조를 봅니다. 5개의 질문에 답하면 지금 당신이 <b>아이디어 단계</b>인지,
+        <b>실행 단계</b>인지, 아니면 <b>확장 단계</b>인지 진단하고, 다음 액션까지 바로 제시합니다.
+      </p>
     </section>
 
-    <button class="floating-button" aria-label="wave button">👋</button>
+    <section class="grid">
+      <div class="card left">
+        <div id="quizSection">
+          <div class="section-title">
+            <h2>진단 진행</h2>
+            <div class="progress" id="progressText">1 / 5</div>
+          </div>
+          <div class="bar"><div id="progressBar"></div></div>
+
+          <div id="questions"></div>
+
+          <div class="nav">
+            <button class="btn-ghost" id="prevBtn">이전</button>
+            <button class="btn-main" id="nextBtn">다음</button>
+          </div>
+        </div>
+
+        <div class="result" id="resultSection">
+          <div class="stage-badge" id="stageBadge">진단 결과</div>
+          <h2 class="result-title" id="resultTitle"></h2>
+          <p class="result-desc" id="resultDesc"></p>
+
+          <div class="result-grid">
+            <div class="result-block">
+              <h4>현재 상태 해석</h4>
+              <p id="resultAnalysis"></p>
+            </div>
+            <div class="result-block">
+              <h4>지금 가장 먼저 고쳐야 할 것</h4>
+              <p id="resultFocus"></p>
+            </div>
+            <div class="result-block">
+              <h4>다음 14일 액션</h4>
+              <p id="resultAction"></p>
+              <div class="tags" id="resultTags"></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn-main" id="restartBtn">다시 진단하기</button>
+            <button class="btn-ghost" id="copyBtn">결과 복사</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card right">
+        <h3>점수 해석 기준</h3>
+        <p class="mini">
+          많은 사람이 “AI를 공부하고 있다”는 착각에 머뭅니다. 하지만 돈은 공부량이 아니라
+          <b>문제 정의 → 상품화 → 판매 → 반복 구조</b>가 있을 때 생깁니다.
+        </p>
+
+        <div class="score-box">
+          <div class="score-label">현재 예상 점수</div>
+          <div class="score-value" id="liveScore">0점</div>
+        </div>
+
+        <div class="checklist">
+          <div class="item"><b>0~5점</b> · 관심 단계<br>AI에 흥미는 있지만 아직 시장과 연결되지 않았습니다.</div>
+          <div class="item"><b>6~10점</b> · 탐색 단계<br>실행은 시작했지만 아직 상품/고객/채널이 흐립니다.</div>
+          <div class="item"><b>11~15점</b> · 실행 단계<br>작게라도 수익화 구조가 생기기 시작한 상태입니다.</div>
+          <div class="item"><b>16~20점</b> · 성장 단계<br>반복 가능한 판매 구조가 있고, 이제 확장 전략이 중요합니다.</div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
-    gsap.from(".top-nav", {
-      y: -18,
-      opacity: 0,
-      duration: 0.8,
-      ease: "power2.out"
+    const questions = [
+      {
+        label: "Question 1",
+        title: "AI로 누구의 어떤 문제를 해결할지 명확합니까?",
+        desc: "막연히 ‘AI로 돈 벌고 싶다’는 수준이면 낮은 점수입니다. 고객과 문제 정의가 또렷할수록 높은 점수입니다.",
+        options: [
+          { title: "아직 모르겠다", desc: "관심 분야는 있지만 고객과 문제가 불분명함", score: 0 },
+          { title: "대략 알고 있다", desc: "예: 소상공인, 강사, 학생 중 누군가는 떠오름", score: 2 },
+          { title: "명확하다", desc: "누구의 어떤 시간을 줄여줄지 한 문장으로 설명 가능", score: 4 }
+        ]
+      },
+      {
+        label: "Question 2",
+        title: "실제로 만든 AI 결과물이나 서비스가 있습니까?",
+        desc: "수익화는 머릿속 아이디어가 아니라 눈에 보이는 결과물에서 시작됩니다.",
+        options: [
+          { title: "없다", desc: "아직 시도 전이거나 공부만 하고 있음", score: 0 },
+          { title: "샘플 정도 있다", desc: "콘텐츠, 템플릿, 챗봇, 자동화 예시를 1~2개 만들어봄", score: 2 },
+          { title: "판매 가능한 형태가 있다", desc: "패키지, 강의, 템플릿, 대행 서비스 등으로 정리됨", score: 4 }
+        ]
+      },
+      {
+        label: "Question 3",
+        title: "사람들이 당신의 AI 결과물에 돈을 낼 이유가 있습니까?",
+        desc: "‘멋있음’이 아니라 시간 절약, 비용 절감, 성과 개선처럼 구매 이유가 있어야 합니다.",
+        options: [
+          { title: "잘 모르겠다", desc: "좋아 보이긴 하지만 돈 낼 이유는 모호함", score: 0 },
+          { title: "조금 있다", desc: "문제 해결 포인트는 있으나 아직 약함", score: 2 },
+          { title: "분명하다", desc: "왜 사야 하는지 전후 비교로 설명 가능", score: 4 }
+        ]
+      },
+      {
+        label: "Question 4",
+        title: "사람들에게 도달할 채널이 있습니까?",
+        desc: "좋은 상품도 노출 경로가 없으면 팔리지 않습니다. SNS, 블로그, 커뮤니티, 이메일, 지인 네트워크 모두 채널입니다.",
+        options: [
+          { title: "없다", desc: "노출 구조가 없고, 팔아본 경험도 없음", score: 0 },
+          { title: "조금 있다", desc: "SNS나 블로그는 있으나 꾸준하지 않음", score: 2 },
+          { title: "있다", desc: "고객이 들어오는 채널을 운영하거나 테스트 중", score: 4 }
+        ]
+      },
+      {
+        label: "Question 5",
+        title: "반복 수익 구조를 만들고 있습니까?",
+        desc: "1회성 노동만으로는 쉽게 지칩니다. 템플릿, 강의, 구독, 자동화 상품처럼 반복 구조가 중요합니다.",
+        options: [
+          { title: "전혀 아니다", desc: "시간을 써야만 돈이 생기는 구조", score: 0 },
+          { title: "조금 고민 중이다", desc: "상품화/자동화를 생각은 하지만 아직 미완성", score: 2 },
+          { title: "그렇다", desc: "반복 판매 또는 자동화 가능한 구조가 이미 있음", score: 4 }
+        ]
+      }
+    ];
+
+    const results = [
+      {
+        min: 0,
+        max: 5,
+        badge: "관심 단계",
+        title: "당신은 지금 ‘AI 관심 단계’입니다.",
+        desc: "문제는 AI 실력이 부족한 게 아니라, 시장과 연결되지 않았다는 점입니다.",
+        analysis: "지금 상태에서 계속 도구만 배우면 ‘배운 사람’으로 끝납니다. 아직 고객, 문제, 제안 가치가 흐립니다. 즉, 수익화가 안 되는 이유는 능력 부족보다 방향 부재일 가능성이 큽니다.",
+        focus: "도구를 더 배우는 것보다 ‘누구의 어떤 문제를 해결할지’ 한 줄로 못 박아야 합니다. 대상이 흐리면 상품도 흐리고, 상품이 흐리면 절대 팔리지 않습니다.",
+        action: "앞으로 14일 동안 한 명의 고객군만 정하고, 그들이 반복해서 겪는 문제 10개를 적으세요. 그중 하나를 골라 아주 작은 AI 결과물 1개를 만들어 반응을 확인하세요.",
+        tags: ["고객 정의", "문제 10개 찾기", "작은 샘플 제작"]
+      },
+      {
+        min: 6,
+        max: 10,
+        badge: "탐색 단계",
+        title: "당신은 지금 ‘AI 탐색 단계’입니다.",
+        desc: "실행은 시작했지만, 아직 돈이 되는 구조로 압축되지 않았습니다.",
+        analysis: "많은 사람이 여기서 오래 머뭅니다. 뭔가는 만들었지만 고객이 왜 사는지, 어디서 팔지, 어떻게 반복할지가 약합니다. 결과물은 있는데 상품이 아닌 상태일 수 있습니다.",
+        focus: "샘플을 더 만드는 게 아니라, 하나를 골라 상품화해야 합니다. 무료 샘플, 유료 본상품, 후기 확보 구조가 필요합니다.",
+        action: "14일 안에 가장 반응 좋을 것 같은 AI 결과물 1개만 정하고, 이를 ‘무료 체험판 + 유료 버전’ 구조로 재정리하세요. 가격, 대상, 제공 범위를 문장으로 고정하세요.",
+        tags: ["상품화", "가격 설정", "무료→유료 전환"]
+      },
+      {
+        min: 11,
+        max: 15,
+        badge: "실행 단계",
+        title: "당신은 지금 ‘AI 실행 단계’입니다.",
+        desc: "작지만 분명한 수익화 가능성이 보이기 시작한 상태입니다.",
+        analysis: "이 단계에서는 감보다 숫자가 중요합니다. 무엇이 잘 팔리는지, 어떤 채널이 반응이 좋은지, 어떤 제안이 전환이 높은지 추적해야 합니다. 막연한 확장은 오히려 독이 됩니다.",
+        focus: "상품 수를 늘리기보다 가장 잘 팔리는 하나를 더 선명하게 다듬어야 합니다. 설명 문구, 사례, 후기, 전환 동선을 정리하세요.",
+        action: "앞으로 14일 동안 하나의 대표 상품만 밀고, 소개 문구 3가지 버전으로 테스트하세요. 문의 수, 클릭 수, 결제 수를 기록해 가장 전환율 높은 표현을 남기세요.",
+        tags: ["전환율", "대표 상품", "테스트 반복"]
+      },
+      {
+        min: 16,
+        max: 20,
+        badge: "성장 단계",
+        title: "당신은 지금 ‘AI 성장 단계’입니다.",
+        desc: "이제 핵심은 실행 자체가 아니라 확장과 시스템화입니다.",
+        analysis: "이미 구조가 어느 정도 보입니다. 그런데 여기서 사람들은 흔히 다 잘하려다 무너집니다. 채널, 상품, 운영 방식을 시스템으로 묶지 않으면 성장 피로가 옵니다.",
+        focus: "직접 다 하는 구조를 버리고, 반복 업무를 자동화하거나 표준화해야 합니다. 콘텐츠 제작, 응대, 온보딩, 결제 흐름을 정리하세요.",
+        action: "14일 안에 판매 흐름 전체를 그려보고, 그중 가장 자주 반복되는 1개 업무를 자동화하거나 템플릿화하세요. 그리고 객단가 업셀 구조를 붙이세요.",
+        tags: ["자동화", "시스템화", "업셀 설계"]
+      }
+    ];
+
+    const questionsEl = document.getElementById('questions');
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const liveScore = document.getElementById('liveScore');
+    const quizSection = document.getElementById('quizSection');
+    const resultSection = document.getElementById('resultSection');
+    const restartBtn = document.getElementById('restartBtn');
+    const copyBtn = document.getElementById('copyBtn');
+
+    let current = 0;
+    let answers = Array(questions.length).fill(null);
+
+    function renderQuestions() {
+      questionsEl.innerHTML = questions.map((q, qi) => `
+        <div class="question ${qi === current ? 'active' : ''}" data-index="${qi}">
+          <div class="q-label">${q.label}</div>
+          <h3 class="q-title">${q.title}</h3>
+          <p class="q-desc">${q.desc}</p>
+          <div class="options">
+            ${q.options.map((opt, oi) => `
+              <div class="option ${answers[qi] === oi ? 'selected' : ''}" data-q="${qi}" data-o="${oi}">
+                <div class="option-title">${opt.title}</div>
+                <div class="option-desc">${opt.desc}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.option').forEach(option => {
+        option.addEventListener('click', () => {
+          const qIndex = Number(option.dataset.q);
+          const oIndex = Number(option.dataset.o);
+          answers[qIndex] = oIndex;
+          renderQuestions();
+          updateUI();
+        });
+      });
+    }
+
+    function getScore() {
+      return answers.reduce((sum, answer, idx) => {
+        if (answer === null) return sum;
+        return sum + questions[idx].options[answer].score;
+      }, 0);
+    }
+
+    function updateUI() {
+      progressText.textContent = `${current + 1} / ${questions.length}`;
+      progressBar.style.width = `${((current + 1) / questions.length) * 100}%`;
+      liveScore.textContent = `${getScore()}점`;
+      prevBtn.disabled = current === 0;
+
+      const isLast = current === questions.length - 1;
+      nextBtn.textContent = isLast ? '결과 보기' : '다음';
+    }
+
+    function showCurrentQuestion() {
+      document.querySelectorAll('.question').forEach((q, idx) => {
+        q.classList.toggle('active', idx === current);
+      });
+      updateUI();
+    }
+
+    function getResultByScore(score) {
+      return results.find(r => score >= r.min && score <= r.max);
+    }
+
+    function showResult() {
+      const score = getScore();
+      const result = getResultByScore(score);
+      if (!result) return;
+
+      document.getElementById('stageBadge').textContent = `${result.badge} · ${score}점`;
+      document.getElementById('resultTitle').textContent = result.title;
+      document.getElementById('resultDesc').textContent = result.desc;
+      document.getElementById('resultAnalysis').textContent = result.analysis;
+      document.getElementById('resultFocus').textContent = result.focus;
+      document.getElementById('resultAction').textContent = result.action;
+      document.getElementById('resultTags').innerHTML = result.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+      quizSection.style.display = 'none';
+      resultSection.classList.add('show');
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (current > 0) {
+        current--;
+        showCurrentQuestion();
+      }
     });
 
-    gsap.from(".blue-dot", {
-      scale: 0,
-      opacity: 0,
-      duration: 0.5,
-      delay: 0.2,
-      ease: "back.out(2)"
+    nextBtn.addEventListener('click', () => {
+      if (answers[current] === null) {
+        alert('먼저 답변을 선택해주세요.');
+        return;
+      }
+
+      if (current < questions.length - 1) {
+        current++;
+        showCurrentQuestion();
+      } else {
+        showResult();
+      }
     });
 
-    gsap.from(".center-card", {
-      y: 30,
-      opacity: 0,
-      duration: 1,
-      delay: 0.2,
-      ease: "power3.out"
+    restartBtn.addEventListener('click', () => {
+      current = 0;
+      answers = Array(questions.length).fill(null);
+      resultSection.classList.remove('show');
+      quizSection.style.display = 'block';
+      renderQuestions();
+      showCurrentQuestion();
     });
 
-    gsap.from(".left-text", {
-      x: -40,
-      opacity: 0,
-      duration: 0.9,
-      delay: 0.35,
-      ease: "power3.out"
+    copyBtn.addEventListener('click', async () => {
+      const title = document.getElementById('resultTitle').textContent;
+      const badge = document.getElementById('stageBadge').textContent;
+      const desc = document.getElementById('resultDesc').textContent;
+      const analysis = document.getElementById('resultAnalysis').textContent;
+      const focus = document.getElementById('resultFocus').textContent;
+      const action = document.getElementById('resultAction').textContent;
+
+      const text = `[AI 수익화 단계 진단 결과]\n${badge}\n${title}\n\n${desc}\n\n[현재 상태 해석]\n${analysis}\n\n[가장 먼저 고쳐야 할 것]\n${focus}\n\n[다음 14일 액션]\n${action}`;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        copyBtn.textContent = '복사 완료';
+        setTimeout(() => copyBtn.textContent = '결과 복사', 1500);
+      } catch (e) {
+        alert('복사에 실패했습니다. 브라우저 권한을 확인해주세요.');
+      }
     });
 
-    gsap.from(".right-text", {
-      x: 40,
-      opacity: 0,
-      duration: 0.9,
-      delay: 0.35,
-      ease: "power3.out"
-    });
-
-    gsap.from(".floating-button", {
-      y: 30,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.6,
-      ease: "power3.out"
-    });
-
-    gsap.to(".floating-button", {
-      y: -8,
-      duration: 1.6,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
+    renderQuestions();
+    showCurrentQuestion();
   </script>
 </body>
 </html>
