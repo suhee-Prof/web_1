@@ -4,510 +4,429 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Park Su Hee Portfolio</title>
-
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-
   <style>
+    * { box-sizing: border-box; }
+
     :root {
-      --bg: #efeee9;
-      --text: #111111;
-      --mint: #78e6db;
-      --muted: #7d7d79;
-      --line: rgba(0,0,0,0.08);
+      --bg: #efefef;
+      --text: #2f2f31;
+      --muted: #666;
+      --line: #cfcfcf;
+      --white: #ffffff;
+      --accent: #5f63e8;
+      --shadow: 0 10px 35px rgba(0,0,0,0.08);
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      min-height: 100%;
     }
 
     body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      overflow-x: hidden;
+      position: relative;
     }
 
-    .wrap {
-      width: 100%;
+    .page {
       min-height: 100vh;
+      position: relative;
+      padding: 28px 42px 40px;
+      overflow: hidden;
+    }
+
+    .top-nav {
+      width: fit-content;
+      margin: 18px auto 0;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      padding: 10px 12px 10px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.28);
+      backdrop-filter: blur(6px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .brand-thumb {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #dadada;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-size: 15px;
+      color: #505050;
+    }
+
+    .nav-links a {
+      color: inherit;
+      text-decoration: none;
+      transition: opacity .2s ease;
+    }
+
+    .nav-links a:hover { opacity: .65; }
+
+    .contact-btn {
+      border: none;
+      background: #2f2f31;
+      color: white;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 999px;
+      padding: 16px 30px;
+      cursor: pointer;
+      transition: transform .2s ease, opacity .2s ease;
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-1px);
+      opacity: .95;
     }
 
     .hero {
-      position: relative;
-      min-height: 100vh;
-      padding: 38px 38px 80px 38px;
-    }
-
-    /* 상단 메뉴 */
-    .top-menu {
-      position: relative;
-      z-index: 20;
-      display: inline-flex;
+      min-height: calc(100vh - 90px);
+      display: grid;
+      grid-template-columns: 1fr minmax(300px, 342px) 1fr;
       align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      padding: 6px 0;
-      margin-bottom: 30px;
-    }
-
-    .menu-btn {
-      appearance: none;
-      border: none;
-      background: transparent;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-      color: #1a1a1a;
-      font-size: clamp(24px, 2vw, 28px);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      line-height: 1;
+      justify-items: center;
+      gap: 22px;
+      max-width: 1220px;
+      margin: 0 auto;
       position: relative;
-      opacity: 1;
-      pointer-events: auto;
-      transition: color 0.2s ease, transform 0.2s ease;
+      padding: 48px 0 80px;
     }
 
-    .menu-btn:hover {
-      color: #000;
-      transform: translateY(-1px);
-    }
-
-    .menu-btn:focus-visible {
-      outline: none;
-    }
-
-    .menu-btn::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -8px;
+    .hero-left,
+    .hero-right {
       width: 100%;
-      height: 4px;
-      border-radius: 999px;
-      background: var(--mint);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.25s ease;
     }
 
-    .menu-btn:hover::after,
-    .menu-btn.active::after {
-      transform: scaleX(1);
-    }
-
-    .menu-sep {
-      font-size: clamp(24px, 2vw, 28px);
-      color: #7a7a76;
+    .eyebrow {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(24px, 2.1vw, 38px);
       line-height: 1;
-      user-select: none;
+      letter-spacing: 0.02em;
+      margin: 0 0 8px;
+      text-transform: uppercase;
     }
 
-    .hero-stage {
-      position: relative;
-      min-height: 760px;
-    }
-
-    .portfolio-title {
-      position: relative;
-      z-index: 1;
-      margin: 0;
-      font-size: clamp(110px, 18vw, 260px);
-      font-weight: 900;
+    .display {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(86px, 10vw, 148px);
       line-height: 0.88;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      margin: 0;
       text-transform: uppercase;
-      color: #050505;
-      word-break: keep-all;
+      white-space: nowrap;
     }
 
-    .year-mark {
-      position: absolute;
-      right: clamp(40px, 9vw, 130px);
-      top: clamp(260px, 31vw, 430px);
-      z-index: 4;
-      font-size: clamp(56px, 7vw, 100px);
-      color: var(--mint);
-      font-family: "Brush Script MT", "Segoe Script", cursive;
-      transform: rotate(-6deg);
-      user-select: none;
-      pointer-events: none;
+    .hero-left {
+      text-align: left;
+      padding-left: 24px;
+      transform: translateX(22px);
     }
 
-    .year-mark::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 8px;
-      width: 108%;
-      height: 3px;
-      background: var(--mint);
-      transform: skewX(-28deg);
-      opacity: 0.9;
+    .hero-right {
+      text-align: left;
+      transform: translateX(-14px);
     }
 
-    /* 메인 이미지 */
-    .figure-wrap {
-      position: absolute;
-      z-index: 3;
-      left: clamp(170px, 16vw, 260px);
-      top: clamp(90px, 12vw, 160px);
-      width: min(28vw, 360px);
-      transform-origin: center bottom;
-      cursor: pointer;
-      filter: drop-shadow(0 28px 26px rgba(0,0,0,0.12));
-      isolation: isolate;
+    .subcopy {
+      margin-top: 18px;
+      font-size: clamp(18px, 1.55vw, 22px);
+      line-height: 1.45;
+      color: #575757;
+      max-width: 430px;
     }
 
-    .figure-wrap img {
-      display: block;
-      width: 100%;
-      height: auto;
-      user-select: none;
-      -webkit-user-drag: none;
+    .hero-visual {
       position: relative;
+      width: min(342px, 28vw);
+      min-width: 300px;
+      aspect-ratio: 0.78 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
       z-index: 2;
     }
 
-    .figure-wrap::before {
-      content: "";
+    .hero-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .floating-dot {
       position: absolute;
-      inset: -14px;
-      border-radius: 28px;
-      border: 3px solid rgba(255,255,255,0);
-      opacity: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .figure-wrap.selected::before {
-      opacity: 1;
-      border-color: rgba(255,255,255,0.98);
-      box-shadow:
-        0 0 0 2px rgba(255,255,255,0.18),
-        0 0 24px rgba(255,255,255,0.92),
-        0 0 58px rgba(120,230,219,0.42);
-      animation: glowPulse 1.15s ease-in-out infinite;
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { opacity: 0.82; }
-      50% { opacity: 1; }
-    }
-
-    .spark {
-      position: absolute;
-      width: 8px;
-      height: 8px;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
       border-radius: 50%;
-      background: #ffffff;
-      box-shadow:
-        0 0 12px rgba(255,255,255,0.95),
-        0 0 22px rgba(120,230,219,0.55);
-      pointer-events: none;
-      z-index: 50;
+      top: 22%;
+      left: 7%;
+      z-index: 1;
     }
 
-    .hero-note {
+    .hand-badge {
       position: absolute;
-      left: clamp(290px, 23vw, 410px);
-      top: clamp(330px, 35vw, 470px);
-      z-index: 5;
-      font-size: 15px;
-      color: #222;
-      line-height: 1.5;
-    }
-
-    /* 하단 섹션 */
-    .sections {
-      padding: 10px 38px 90px;
+      left: 50%;
+      bottom: 112px;
+      transform: translateX(-245px);
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background: var(--accent);
       display: grid;
-      gap: 22px;
+      place-items: center;
+      box-shadow: 0 14px 35px rgba(95, 99, 232, 0.35);
+      z-index: 4;
     }
 
-    .section-card {
-      scroll-margin-top: 40px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 28px;
-      background: rgba(255,255,255,0.52);
-      box-shadow: 0 16px 38px rgba(0,0,0,0.05);
-      backdrop-filter: blur(8px);
+    .hand-icon {
+      font-size: 48px;
+      color: #fff;
+      line-height: 1;
+      transform: translateY(-2px);
+      user-select: none;
     }
 
-    .section-label {
-      margin: 0 0 8px;
-      color: #777771;
-      font-size: 12px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      font-weight: 700;
+    .mini-toggle {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--accent);
+      z-index: 4;
     }
 
-    .section-title {
-      margin: 0 0 12px;
-      font-size: clamp(28px, 4vw, 46px);
-      letter-spacing: -0.03em;
+    .mini-toggle::before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      left: 4px;
+      top: 3px;
     }
 
-    .section-text {
-      font-size: 17px;
-      line-height: 1.8;
-      color: #242420;
-    }
-
-    @media (max-width: 1024px) {
-      .figure-wrap {
-        left: 120px;
-        top: 140px;
-        width: min(34vw, 320px);
-      }
-
-      .hero-note {
-        left: 220px;
-        top: 430px;
-      }
-    }
-
-    @media (max-width: 768px) {
+    @media (max-width: 1200px) {
       .hero {
-        padding: 24px 20px 60px;
+        grid-template-columns: 1fr 320px 1fr;
       }
 
-      .top-menu {
-        gap: 10px;
-        margin-bottom: 18px;
+      .display {
+        font-size: clamp(74px, 9vw, 124px);
       }
 
-      .menu-btn,
-      .menu-sep {
-        font-size: 17px;
+      .hero-left { transform: translateX(0); }
+      .hero-right { transform: translateX(0); }
+      .hand-badge { transform: translateX(-210px); }
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 20px 18px 36px;
       }
 
-      .hero-stage {
-        min-height: 760px;
+      .top-nav {
+        gap: 16px;
+        padding-right: 8px;
       }
 
-      .portfolio-title {
-        font-size: clamp(72px, 20vw, 130px);
-        line-height: 0.92;
-        margin-top: 10px;
+      .nav-links {
+        gap: 14px;
+        font-size: 14px;
       }
 
-      .figure-wrap {
-        position: relative;
-        left: 0;
-        top: -8px;
-        width: min(70vw, 320px);
-        margin: 0 auto;
+      .contact-btn {
+        padding: 13px 20px;
       }
 
-      .hero-note {
-        position: relative;
-        left: 0;
-        top: 0;
-        margin-top: 10px;
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 26px;
+        padding-top: 30px;
+        padding-bottom: 100px;
+      }
+
+      .hero-left,
+      .hero-right {
         text-align: center;
+        padding-left: 0;
       }
 
-      .year-mark {
-        right: 24px;
-        top: 330px;
+      .hero-right {
+        order: 3;
       }
 
-      .sections {
-        padding: 0 20px 70px;
+      .hero-visual {
+        order: 2;
+        width: min(82vw, 360px);
+      }
+
+      .subcopy {
+        margin: 16px auto 0;
+      }
+
+      .display {
+        white-space: normal;
+      }
+
+      .hand-badge {
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        bottom: 72px;
+        transform: translateX(-150px);
+      }
+
+      .hand-icon {
+        font-size: 38px;
+      }
+
+      .floating-dot {
+        top: 15%;
+        left: 10%;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .top-nav {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 8px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .contact-btn {
+        padding: 12px 18px;
+        font-size: 14px;
+      }
+
+      .eyebrow {
+        font-size: 22px;
+      }
+
+      .display {
+        font-size: 72px;
+      }
+
+      .subcopy {
+        font-size: 16px;
+      }
+
+      .hand-badge {
+        transform: translateX(-120px);
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrap">
+  <main class="page">
+    <div class="floating-dot"></div>
+
+    <nav class="top-nav">
+      <img src="img3.jpg" alt="profile icon" class="brand-thumb" />
+      <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#blogs">Blogs</a>
+      </div>
+      <button class="contact-btn">Contact</button>
+    </nav>
+
     <section class="hero">
-      <nav class="top-menu">
-        <button class="menu-btn active" data-target="#about">PARK SU HEE</button>
-        <span class="menu-sep">•</span>
-        <button class="menu-btn" data-target="#mom">MOM</button>
-        <span class="menu-sep">•</span>
-        <button class="menu-btn" data-target="#professor">PROFESSOR</button>
-      </nav>
+      <div class="hero-left hero-copy">
+        <p class="eyebrow">PARK SU HEE</p>
+        <h1 class="display">CLASS</h1>
+      </div>
 
-      <div class="hero-stage">
-        <h1 class="portfolio-title">PORTFOLIO</h1>
+      <div class="hero-visual hero-photo-wrap">
+        <img src="img3.jpg" alt="Park Su Hee main photo" class="hero-photo" />
+      </div>
 
-        <div class="figure-wrap" id="profileFigure" tabindex="0" aria-label="Park Su Hee image">
-          <img src="img7.png" alt="Park Su Hee">
-        </div>
-
-        <div class="hero-note">click image / tap menu</div>
-        <div class="year-mark">2026</div>
+      <div class="hero-right hero-copy">
+        <h2 class="display">DESIGNER</h2>
+        <p class="subcopy">By the end of the class, you can do at least one thing.</p>
       </div>
     </section>
 
-    <section class="sections">
-      <article class="section-card" id="about">
-        <p class="section-label">Identity</p>
-        <h2 class="section-title">PARK SU HEE</h2>
-        <div class="section-text">
-          아이디어를 수업과 결과물로 연결하는 사람입니다. 교육, 콘텐츠, 디지털 도구를
-          분리해서 보지 않고 하나의 실행 구조로 엮는 데 강점이 있습니다.
-        </div>
-      </article>
+    <div class="hand-badge" aria-hidden="true">
+      <div class="hand-icon">🖐</div>
+    </div>
 
-      <article class="section-card" id="mom">
-        <p class="section-label">Role</p>
-        <h2 class="section-title">MOM</h2>
-        <div class="section-text">
-          돌봄과 성장은 오래 보는 힘에서 시작된다고 생각합니다. 엄마라는 역할은 감정,
-          시간, 균형을 동시에 다루는 감각을 길러 주었고 그것은 제 일에도 이어집니다.
-        </div>
-      </article>
-
-      <article class="section-card" id="professor">
-        <p class="section-label">Work</p>
-        <h2 class="section-title">PROFESSOR</h2>
-        <div class="section-text">
-          학생들이 기술을 어렵게 느끼지 않도록, 복잡한 개념을 쉽게 구조화하고 실습 가능한
-          경험으로 바꾸는 수업을 지향합니다. AI와 실무를 연결하는 교육에 관심이 큽니다.
-        </div>
-      </article>
-    </section>
-  </div>
+    <div class="mini-toggle" aria-hidden="true"></div>
+  </main>
 
   <script>
-    const menuButtons = document.querySelectorAll('.menu-btn');
+    gsap.set('.top-nav', { y: -30, opacity: 0 });
+    gsap.set('.hero-left', { x: -70, opacity: 0 });
+    gsap.set('.hero-right', { x: 70, opacity: 0 });
+    gsap.set('.hero-photo-wrap', { y: 40, opacity: 0, scale: 0.96 });
+    gsap.set('.hand-badge', { scale: 0, rotation: -18, opacity: 0 });
+    gsap.set('.mini-toggle', { y: 14, opacity: 0 });
+    gsap.set('.floating-dot', { scale: 0, opacity: 0 });
 
-    menuButtons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        menuButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-        gsap.fromTo(
-          btn,
-          { scale: 1, y: 0 },
-          {
-            scale: 0.92,
-            y: 1,
-            duration: 0.08,
-            yoyo: true,
-            repeat: 1,
-            ease: 'power1.out'
-          }
-        );
+    tl.to('.top-nav', { y: 0, opacity: 1, duration: 0.75 })
+      .to('.hero-left', { x: 0, opacity: 1, duration: 0.9 }, '-=0.2')
+      .to('.hero-photo-wrap', { y: 0, opacity: 1, scale: 1, duration: 0.9 }, '-=0.55')
+      .to('.hero-right', { x: 0, opacity: 1, duration: 0.9 }, '-=0.7')
+      .to('.hand-badge', { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.8)' }, '-=0.3')
+      .to('.mini-toggle', { y: 0, opacity: 1, duration: 0.35 }, '-=0.2')
+      .to('.floating-dot', { scale: 1, opacity: 1, duration: 0.4 }, '-=0.25');
 
-        const target = document.querySelector(btn.dataset.target);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
+    gsap.to('.floating-dot', {
+      y: -14,
+      duration: 1.8,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true
     });
 
-    const figure = document.getElementById('profileFigure');
-
-    function sparkleBurst() {
-      const rect = figure.getBoundingClientRect();
-      const count = 12;
-
-      for (let i = 0; i < count; i++) {
-        const spark = document.createElement('span');
-        spark.className = 'spark';
-        document.body.appendChild(spark);
-
-        const startX = rect.left + window.scrollX + rect.width * (0.15 + Math.random() * 0.7);
-        const startY = rect.top + window.scrollY + rect.height * (0.12 + Math.random() * 0.75);
-        const moveX = (Math.random() - 0.5) * 130;
-        const moveY = (Math.random() - 0.5) * 130;
-
-        gsap.set(spark, {
-          x: startX,
-          y: startY,
-          scale: 0,
-          opacity: 0
-        });
-
-        gsap.to(spark, {
-          opacity: 1,
-          scale: 1.35,
-          duration: 0.14,
-          ease: 'power2.out',
-          onComplete: () => {
-            gsap.to(spark, {
-              x: startX + moveX,
-              y: startY + moveY,
-              opacity: 0,
-              scale: 0,
-              duration: 0.72,
-              ease: 'power2.in',
-              onComplete: () => spark.remove()
-            });
-          }
-        });
-      }
-    }
-
-    function activateFigure() {
-      figure.classList.toggle('selected');
-
-      gsap.killTweensOf(figure);
-      gsap.fromTo(
-        figure,
-        { scale: 1 },
-        {
-          scale: 1.045,
-          duration: 0.28,
-          ease: 'power2.out',
-          yoyo: true,
-          repeat: 1
-        }
-      );
-
-      sparkleBurst();
-    }
-
-    figure.addEventListener('click', activateFigure);
-
-    figure.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        activateFigure();
-      }
+    gsap.to('.hand-badge', {
+      y: -10,
+      duration: 2.3,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true
     });
 
-    gsap.from('.top-menu > *', {
-      y: -18,
-      opacity: 0,
-      duration: 0.7,
-      ease: 'power3.out',
-      stagger: 0.06
-    });
-
-    gsap.from('.portfolio-title', {
-      y: 24,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out'
-    });
-
-    gsap.from('.figure-wrap', {
-      x: -28,
-      y: 24,
-      opacity: 0,
-      duration: 1.05,
-      delay: 0.16,
-      ease: 'power3.out'
-    });
-
-    gsap.from('.year-mark', {
-      x: 18,
-      opacity: 0,
-      duration: 0.8,
-      delay: 0.3,
-      ease: 'power2.out'
+    gsap.to('.hero-photo', {
+      scale: 1.03,
+      duration: 3.5,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      transformOrigin: 'center center'
     });
   </script>
 </body>
